@@ -2,12 +2,20 @@
 
 <div class="desktop">
     <div class="desktop-grid">
+        <div class="icon" @onclick="() => ShowInfo()">
+            <img src="icons/info.png" alt="info icon" />
+            <div>Info</div>
+        </div>
         <div class="icon" @onclick="() => ShowTodo()">
             <img src="icons/todolist.png" alt="todo icon" />
             <div>Todo</div>
         </div>
     </div>
 
+    @if (showInfo)
+    {
+        <InfoWidget OnClose="@(() => showInfo = false)" />
+    }
     @if (showTodo)
     {
         <TodoWidget OnClose="@(() => showTodo = false)" />
@@ -17,9 +25,16 @@
 <Taskbar Tasks=tasks />
 
 @code {
+    private bool showInfo = false;
     private bool showTodo = false;
 
     private List<string> tasks = ["File Explorer", "Web Browser"];
+
+    private void ShowInfo()
+    {
+        showInfo = true;
+        StateHasChanged();
+    }
 
     private void ShowTodo()
     {
