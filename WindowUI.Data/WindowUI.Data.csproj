@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories/" />
+    <ProjectReference Include="../WindowUI.Domain/WindowUI.Domain.csproj" />
   </ItemGroup>
 
 </Project>

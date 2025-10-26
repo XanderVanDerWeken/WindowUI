@@ -7,9 +7,19 @@ namespace WindowUI.Data
     {
         public DbSet<TodoItemEntity> TodoItems { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public WindowUiContext(DbContextOptions<WindowUiContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlite("Data Source=windowui.db");
         }
-    }   
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TodoItemEntity>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Title).IsRequired();
+                entity.Property(e => e.IsCompleted).HasDefaultValue(false);
+            });
+        }
+    }
 }

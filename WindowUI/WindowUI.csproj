@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../WindowUI.Data/WindowUI.Data.csproj" />
     <ProjectReference Include="../WindowUI.Domain/WindowUI.Domain.csproj" />
   </ItemGroup>
 
