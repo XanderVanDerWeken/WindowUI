@@ -1,4 +1,4 @@
-namespace WindowUI.Services
+namespace WindowUI.Web.Services
 {
     using WindowUI.Domain.Models;
 

@@ -1,4 +1,4 @@
-namespace WindowUI.Models
+namespace WindowUI.Web.Models
 {
     public class Application
     {

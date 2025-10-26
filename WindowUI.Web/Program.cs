@@ -1,10 +1,10 @@
-namespace WindowUI
+namespace WindowUI.Web
 {
     using Microsoft.EntityFrameworkCore;
-    using WindowUI.Components;
     using WindowUI.Data;
     using WindowUI.Data.Repositories;
-    using WindowUI.Services;
+    using WindowUI.Web.Components;
+    using WindowUI.Web.Services;
 
     public class Program
     {
@@ -13,13 +13,13 @@ namespace WindowUI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddRazorComponents()
+                .AddInteractiveServerComponents();
+
             builder.Services.AddDbContext<WindowUiContext>(options =>
             {
                 options.UseSqlite("Data Source=windowui.db");
             });
-
-            builder.Services.AddRazorComponents()
-                .AddInteractiveServerComponents();
 
             builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
 
