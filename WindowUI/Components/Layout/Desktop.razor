@@ -13,21 +13,23 @@
         }
     </div>
 
-    @*@if (showInfo)
+    @foreach (var app in _runningApplications)
     {
-        <InfoWidget OnClose="@(() => showInfo = false)" />
+        @if (app.ComponentType is not null)
+        {
+            <DynamicComponent 
+                Type="@app.ComponentType"
+                Parameters="@(new Dictionary<string, object?>
+                  {
+                      ["OnClose"] = EventCallback.Factory.Create(this, () => CloseApp(app))
+                  })" />
+        }
     }
-    @if (showTodo)
-    {
-        <TodoWidget OnClose="@(() => showTodo = false)" />
-    }*@
 </div>
 
 <Taskbar Tasks="_runningApplications.Select(a => a.Name).ToList()" />
 
 @code {
-    private List<string> tasks = ["File Explorer", "Web Browser"];
-
     private List<Application> _applications = [
         new Application
         {
