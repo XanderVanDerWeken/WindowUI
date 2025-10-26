@@ -1,44 +1,63 @@
 ﻿@rendermode InteractiveServer
 
+@using WindowUI.Models
+
 <div class="desktop">
     <div class="desktop-grid">
-        <div class="icon" @onclick="() => ShowInfo()">
-            <img src="icons/info.png" alt="info icon" />
-            <div>Info</div>
-        </div>
-        <div class="icon" @onclick="() => ShowTodo()">
-            <img src="icons/todolist.png" alt="todo icon" />
-            <div>Todo</div>
-        </div>
+        @foreach (var app in _applications)
+        {
+            <div class="icon" @onclick="@(() => OpenApp(app))">
+                <img src="@app.Icon" alt="@app.Name icon" />
+                <div>@app.Name</div>
+            </div>    
+        }
     </div>
 
-    @if (showInfo)
+    @*@if (showInfo)
     {
         <InfoWidget OnClose="@(() => showInfo = false)" />
     }
     @if (showTodo)
     {
         <TodoWidget OnClose="@(() => showTodo = false)" />
-    }
+    }*@
 </div>
 
-<Taskbar Tasks=tasks />
+<Taskbar Tasks="_runningApplications.Select(a => a.Name).ToList()" />
 
 @code {
-    private bool showInfo = false;
-    private bool showTodo = false;
-
     private List<string> tasks = ["File Explorer", "Web Browser"];
 
-    private void ShowInfo()
+    private List<Application> _applications = [
+        new Application
+        {
+            Name = "Info",
+            Icon = "icons/info.png",
+            ComponentType = typeof(InfoWidget)
+        },
+        new Application
+        {
+            Name = "Todo List",
+            Icon = "icons/todolist.png",
+            ComponentType =  typeof(TodoWidget)
+        },
+    ];
+
+    private List<Application> _runningApplications = [];
+
+    private void OpenApp(Application app)
     {
-        showInfo = true;
-        StateHasChanged();
+        if (!_runningApplications.Contains(app))
+        {
+            _runningApplications.Add(app);
+        }
     }
 
-    private void ShowTodo()
+    private void CloseApp(Application app)
     {
-        showTodo = true;
-        StateHasChanged();
+        if (_runningApplications.Contains(app))
+        {
+            _runningApplications.Remove(app);
+        }
     }
 }
