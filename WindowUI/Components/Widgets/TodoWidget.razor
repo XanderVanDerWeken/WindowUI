@@ -1,8 +1,11 @@
-﻿<WindowBase Title="Todo List" OnClose="OnClose">
+﻿@using WindowUI.Domain.Models
+
+<WindowBase Title="Todo List" OnClose="OnClose">
     <div class="todos">
-        <TodoItem Title="Buy groceries" IsDone="false" />
-        <TodoItem Title="Walk the dog" IsDone="true" />
-        <TodoItem Title="Read a book" IsDone="false" />
+        @foreach (var todo in _todos)
+        {
+            <TodoComp Title="@todo.Title" IsDone="@todo.IsCompleted" />
+        }
     </div>
 </WindowBase>
 
@@ -11,4 +14,11 @@
     public EventCallback OnClose { get; set; }
 
     private void OnCloseClicked() => OnClose.InvokeAsync();
+
+    private List<TodoItem> _todos = new()
+    {
+        new TodoItem { Title = "Buy groceries", IsCompleted = false },
+        new TodoItem { Title = "Walk the dog", IsCompleted = true },
+        new TodoItem { Title = "Read a book", IsCompleted = false },
+    };
 }

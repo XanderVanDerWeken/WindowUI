@@ -11,4 +11,8 @@
     <Folder Include="wwwroot/images/" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../WindowUI.Domain/WindowUI.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
