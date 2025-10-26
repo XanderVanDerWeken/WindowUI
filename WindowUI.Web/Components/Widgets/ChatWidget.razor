@@ -1,6 +1,11 @@
-﻿@using WindowUI.Domain.Models
+﻿@using Microsoft.AspNetCore.SignalR
+@using WindowUI.Domain.Models
+@using Microsoft.AspNetCore.SignalR.Client
+
+@implements IAsyncDisposable
 
 @inject WindowUI.Web.Services.IChatMessageService ChatMessageService
+@inject NavigationManager NavigationManager
 
 <WindowBase Title="Chat" OnClose="OnClose">
     <div class="chat">
@@ -22,6 +27,8 @@
     [Parameter]
     public EventCallback OnClose { get; set; }
 
+    private HubConnection? hubConnection;
+
     private List<ChatMessage> _messages = [];
 
     private string _newMessage = string.Empty;
@@ -29,6 +36,22 @@
     protected override async Task OnInitializedAsync()
     {
         _messages = await ChatMessageService.GetMessagesAsync();
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<string, string>("ReceiveMessage", (authorName, message) =>
+        {
+            _messages.Add(new ChatMessage
+            {
+                AuthorName = authorName,
+                Message = message,
+            });
+        });
+
+        await hubConnection.StartAsync();
     }
 
     public async Task SubmitNewMessage()
@@ -42,5 +65,13 @@
         _newMessage = string.Empty;
 
         StateHasChanged();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
     }
 }

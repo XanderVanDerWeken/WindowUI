@@ -4,6 +4,8 @@ namespace WindowUI.Web
     using WindowUI.Data;
     using WindowUI.Data.Repositories;
     using WindowUI.Web.Components;
+    using WindowUI.Web.Extensions;
+    using WindowUI.Web.Hubs;
     using WindowUI.Web.Services;
 
     public class Program
@@ -38,6 +40,8 @@ namespace WindowUI.Web
             app.MapStaticAssets();
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
+            
+            app.MapHub<ChatHub>("/chathub");
 
             app.Run();
         }
