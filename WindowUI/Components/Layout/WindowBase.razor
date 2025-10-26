@@ -1,0 +1,21 @@
+﻿<div class="window-base">
+    <div class="window-titlebar">
+        <h3>@Title</h3>
+        <button class="close-button" @onclick="OnClose">X</button>
+    </div>
+
+    <div class="window-content">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Window";
+    
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

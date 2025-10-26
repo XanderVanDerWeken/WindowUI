@@ -1,0 +1,16 @@
+﻿<WindowBase Title="Todo List" OnClose="OnClose">
+    <div class="todos">
+        <ul>
+            <li>Task 1</li>
+            <li>Task 2</li>
+            <li>Task 3</li>
+        </ul>
+    </div>
+</WindowBase>
+
+@code {
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private void OnCLoseClicked() => OnClose.InvokeAsync();
+}
