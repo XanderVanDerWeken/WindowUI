@@ -1,0 +1,24 @@
+﻿<WindowBase Title="Chat" OnClose="OnClose">
+    <div class="chat">
+        <div class="chat-content">
+        
+        </div>
+
+        <div class="chat-new-message">
+            <input type="text" placeholder="New Message..." @bind-value="_newMessage" />
+            <button @onclick="() => InvokeAsync(SubmitNewMessage)">Add</button>
+        </div>
+    </div>
+</WindowBase>>
+
+@code {
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private string _newMessage = string.Empty;
+
+    public Task SubmitNewMessage()
+    {
+        return Task.CompletedTask;
+    }
+}

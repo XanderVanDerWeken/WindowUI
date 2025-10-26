@@ -35,14 +35,20 @@
         {
             Name = "Info",
             Icon = "icons/info.png",
-            ComponentType = typeof(InfoWidget)
+            ComponentType = typeof(InfoWidget),
         },
         new Application
         {
             Name = "Todo List",
             Icon = "icons/todolist.png",
-            ComponentType =  typeof(TodoWidget)
+            ComponentType = typeof(TodoWidget),
         },
+        new Application
+        {
+            Name = "Chat",
+            Icon = "icons/chat.png",
+            ComponentType = typeof(ChatWidget),
+        }
     ];
 
     private List<Application> _runningApplications = [];
