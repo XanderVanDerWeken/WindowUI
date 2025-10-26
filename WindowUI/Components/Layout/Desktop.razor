@@ -10,7 +10,7 @@
 
     @if (showTodo)
     {
-        <TodoWindow OnClose="@(() => showTodo = false)" />
+        <TodoWidget OnClose="@(() => showTodo = false)" />
     }
 </div>
 
@@ -21,7 +21,6 @@
 
     private void ShowTodo()
     {
-        Console.WriteLine("Showing Todo Window");
         showTodo = true;
         StateHasChanged();
     }
