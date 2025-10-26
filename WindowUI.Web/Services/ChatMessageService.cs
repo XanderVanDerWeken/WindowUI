@@ -24,7 +24,7 @@ namespace WindowUI.Web.Services
             return await repository.GetChatMessages().ToListAsync();
         }
 
-        public async Task SendMessageAsync(ChatMessage message)
+        public async Task SaveMessageAsync(ChatMessage message)
         {
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IChatMessageRepository>();

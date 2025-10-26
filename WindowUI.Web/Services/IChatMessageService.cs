@@ -4,7 +4,7 @@ namespace WindowUI.Web.Services
 
     public interface IChatMessageService
     {
-        public Task SendMessageAsync(ChatMessage message);
+        public Task SaveMessageAsync(ChatMessage message);
 
         public Task<List<ChatMessage>> GetMessagesAsync();
     }

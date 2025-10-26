@@ -12,7 +12,9 @@
         <div class="chat-content">
             @foreach (var message in _messages)
             {
-                <ChatMessageComp AuthorName="@message.AuthorName" Message="@message.Message" />
+                <div class="chat-item">
+                    <strong>@message.AuthorName :</strong> @message.Message
+                </div>
             }
         </div>
 
@@ -49,6 +51,8 @@
                 AuthorName = authorName,
                 Message = message,
             });
+
+            InvokeAsync(StateHasChanged);
         });
 
         await hubConnection.StartAsync();
@@ -56,15 +60,15 @@
 
     public async Task SubmitNewMessage()
     {
-        await ChatMessageService.SendMessageAsync(new ChatMessage
+        var authorName = "Author";
+
+        if (hubConnection is not null && !string.IsNullOrWhiteSpace(_newMessage))
         {
-            AuthorName = "Author",
-            Message = _newMessage,
-        });
+            await hubConnection.SendAsync("SendMessage", authorName, _newMessage);
+            _newMessage = string.Empty;
 
-        _newMessage = string.Empty;
-
-        StateHasChanged();
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
     public async ValueTask DisposeAsync()
