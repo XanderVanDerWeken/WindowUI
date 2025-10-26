@@ -16,16 +16,10 @@ namespace WindowUI.Web
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddDbContext<WindowUiContext>(options =>
-            {
-                options.UseSqlite("Data Source=windowui.db");
-            });
+            builder.Services.AddSignalR();
 
-            builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
-            builder.Services.AddScoped<IChatMessageRepository, ChatMessageRepository>();
-
-            builder.Services.AddSingleton<ITodoItemService, TodoItemService>();
-            builder.Services.AddSingleton<IChatMessageService, ChatMessageService>();
+            builder.Services.AddWindowDb()
+                .AddWindowServices();
 
             var app = builder.Build();
 
