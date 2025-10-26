@@ -16,7 +16,7 @@ namespace WindowUI.Web.Services
             _serviceScopeFactory = serviceScopeFactory;
         }
 
-        public async Task<List<ChatMessage>> GetMessages()
+        public async Task<List<ChatMessage>> GetMessagesAsync()
         {
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IChatMessageRepository>();
@@ -24,7 +24,7 @@ namespace WindowUI.Web.Services
             return await repository.GetChatMessages().ToListAsync();
         }
 
-        public async Task SendMessage(ChatMessage message)
+        public async Task SendMessageAsync(ChatMessage message)
         {
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IChatMessageRepository>();

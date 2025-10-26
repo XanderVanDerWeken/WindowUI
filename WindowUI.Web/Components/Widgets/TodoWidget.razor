@@ -20,8 +20,6 @@
     [Parameter]
     public EventCallback OnClose { get; set; }
 
-    private void OnCloseClicked() => OnClose.InvokeAsync();
-
     private List<TodoItem> _todos = [];
     
     private string _newTodoTitle = string.Empty;

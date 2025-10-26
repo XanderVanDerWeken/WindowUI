@@ -5,7 +5,10 @@
 <WindowBase Title="Chat" OnClose="OnClose">
     <div class="chat">
         <div class="chat-content">
-        
+            @foreach (var message in _messages)
+            {
+                <ChatMessageComp AuthorName="@message.AuthorName" Message="@message.Message" />
+            }
         </div>
 
         <div class="chat-new-message">
@@ -19,15 +22,24 @@
     [Parameter]
     public EventCallback OnClose { get; set; }
 
+    private List<ChatMessage> _messages = [];
+
     private string _newMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _messages = await ChatMessageService.GetMessagesAsync();
+    }
 
     public async Task SubmitNewMessage()
     {
-        await ChatMessageService.SendMessage(new ChatMessage
+        await ChatMessageService.SendMessageAsync(new ChatMessage
         {
             AuthorName = "Author",
             Message = _newMessage,
         });
+
+        _newMessage = string.Empty;
 
         StateHasChanged();
     }

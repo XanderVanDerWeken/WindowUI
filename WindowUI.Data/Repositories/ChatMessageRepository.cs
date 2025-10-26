@@ -31,7 +31,7 @@ namespace WindowUI.Data.Repositories
         {
             _dbContext.ChatMessages.Add(new ChatMessageEntity
             {
-                AuthorName = chatMessage.Message,
+                AuthorName = chatMessage.AuthorName,
                 Message = chatMessage.Message,
             });
 
