@@ -1,16 +1,20 @@
 ﻿@implements IDisposable
 
 @using System.Threading
+@using WindowUI.Models
 
 <div class="taskbar">
     <button class="start-button">Start</button>
 
     <div class=tasks>
-        @if (Tasks is not null && Tasks.Any())
+        @if (Tasks.Any())
         {
             @foreach (var task in Tasks)
             {
-                <div class="task">@task</div>
+                <div class="task">
+                    <img src="@task.Icon" alt="@task.Name icon" />
+                    @task.Name
+                </div>
             }
         }
     </div>
@@ -20,7 +24,7 @@
 
 @code {
     [Parameter]
-    public List<string> Tasks { get; set; } = [];
+    public List<Application> Tasks { get; set; } = [];
 
     private DateTime _currentTime = DateTime.Now;
     private Timer? _timer;
