@@ -1,5 +1,7 @@
 ﻿@using WindowUI.Domain.Models
 
+@inject WindowUI.Services.ITodoItemService TodoItemService
+
 <WindowBase Title="Todo List" OnClose="OnClose">
     <div class="todos">
         @foreach (var todo in _todos)
@@ -15,10 +17,10 @@
 
     private void OnCloseClicked() => OnClose.InvokeAsync();
 
-    private List<TodoItem> _todos = new()
+    private List<TodoItem> _todos = [];
+
+    protected override async Task OnInitializedAsync()
     {
-        new TodoItem { Title = "Buy groceries", IsCompleted = false },
-        new TodoItem { Title = "Walk the dog", IsCompleted = true },
-        new TodoItem { Title = "Read a book", IsCompleted = false },
-    };
+        _todos = await TodoItemService.GetAllTodoItemsAsync();
+    }
 }

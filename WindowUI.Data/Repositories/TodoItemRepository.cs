@@ -12,13 +12,28 @@ namespace WindowUI.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task SaveTodoItemAsync(TodoItem newTodoItem)
+        public async Task SaveTodoItemAsync(TodoItem todoItem)
         {
-            _dbContext.TodoItems.Add(new TodoItemEntity
+            if (todoItem.Id == 0)
             {
-                Title = newTodoItem.Title,
-                IsCompleted = newTodoItem.IsCompleted
-            });
+                // Create new item
+                _dbContext.TodoItems.Add(new TodoItemEntity
+                {
+                    Title = todoItem.Title,
+                    IsCompleted = todoItem.IsCompleted
+                });
+            }
+            else
+            {
+                // Update existing item
+                var existingEntity = await _dbContext.TodoItems.FindAsync(todoItem.Id);
+                if (existingEntity != null)
+                {
+                    existingEntity.Title = todoItem.Title;
+                    existingEntity.IsCompleted = todoItem.IsCompleted;
+                }
+            }
+            
             await _dbContext.SaveChangesAsync();
         }
 
@@ -30,6 +45,7 @@ namespace WindowUI.Data.Repositories
             {
                 yield return new TodoItem
                 {
+                    Id = entity.Id,
                     Title = entity.Title,
                     IsCompleted = entity.IsCompleted
                 };

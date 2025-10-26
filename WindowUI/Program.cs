@@ -4,6 +4,7 @@ namespace WindowUI
     using WindowUI.Components;
     using WindowUI.Data;
     using WindowUI.Data.Repositories;
+    using WindowUI.Services;
 
     public class Program
     {
@@ -21,6 +22,8 @@ namespace WindowUI
                 .AddInteractiveServerComponents();
 
             builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+
+            builder.Services.AddSingleton<ITodoItemService, TodoItemService>();
 
             var app = builder.Build();
 
