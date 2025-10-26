@@ -22,8 +22,10 @@ namespace WindowUI.Web
             });
 
             builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+            builder.Services.AddScoped<IChatMessageRepository, ChatMessageRepository>();
 
             builder.Services.AddSingleton<ITodoItemService, TodoItemService>();
+            builder.Services.AddSingleton<IChatMessageService, ChatMessageService>();
 
             var app = builder.Build();
 

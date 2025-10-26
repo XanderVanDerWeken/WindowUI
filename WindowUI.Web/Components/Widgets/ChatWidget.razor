@@ -1,4 +1,8 @@
-﻿<WindowBase Title="Chat" OnClose="OnClose">
+﻿@using WindowUI.Domain.Models
+
+@inject WindowUI.Web.Services.IChatMessageService ChatMessageService
+
+<WindowBase Title="Chat" OnClose="OnClose">
     <div class="chat">
         <div class="chat-content">
         
@@ -6,7 +10,7 @@
 
         <div class="chat-new-message">
             <input type="text" placeholder="New Message..." @bind-value="_newMessage" />
-            <button @onclick="() => InvokeAsync(SubmitNewMessage)">Add</button>
+            <button @onclick="() => InvokeAsync(SubmitNewMessage)">Send</button>
         </div>
     </div>
 </WindowBase>>
@@ -17,8 +21,14 @@
 
     private string _newMessage = string.Empty;
 
-    public Task SubmitNewMessage()
+    public async Task SubmitNewMessage()
     {
-        return Task.CompletedTask;
+        await ChatMessageService.SendMessage(new ChatMessage
+        {
+            AuthorName = "Author",
+            Message = _newMessage,
+        });
+
+        StateHasChanged();
     }
 }
