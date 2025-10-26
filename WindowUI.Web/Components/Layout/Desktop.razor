@@ -1,0 +1,65 @@
+﻿@rendermode InteractiveServer
+
+@using WindowUI.Web.Models
+
+<div class="desktop">
+    <div class="desktop-grid">
+        @foreach (var app in _applications)
+        {
+            <div class="icon" @onclick="@(() => OpenApp(app))">
+                <img src="@app.Icon" alt="@app.Name icon" />
+                <div>@app.Name</div>
+            </div>    
+        }
+    </div>
+
+    @foreach (var app in _runningApplications)
+    {
+        @if (app.ComponentType is not null)
+        {
+            <DynamicComponent 
+                Type="@app.ComponentType"
+                Parameters="@(new Dictionary<string, object?>
+                  {
+                      ["OnClose"] = EventCallback.Factory.Create(this, () => CloseApp(app))
+                  })" />
+        }
+    }
+</div>
+
+<Taskbar Tasks="_runningApplications" />
+
+@code {
+    private List<Application> _applications = [
+        new Application
+        {
+            Name = "Info",
+            Icon = "icons/info.png",
+            ComponentType = typeof(InfoWidget)
+        },
+        new Application
+        {
+            Name = "Todo List",
+            Icon = "icons/todolist.png",
+            ComponentType =  typeof(TodoWidget)
+        },
+    ];
+
+    private List<Application> _runningApplications = [];
+
+    private void OpenApp(Application app)
+    {
+        if (!_runningApplications.Contains(app))
+        {
+            _runningApplications.Add(app);
+        }
+    }
+
+    private void CloseApp(Application app)
+    {
+        if (_runningApplications.Contains(app))
+        {
+            _runningApplications.Remove(app);
+        }
+    }
+}

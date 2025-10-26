@@ -1,0 +1,44 @@
+﻿@using WindowUI.Domain.Models
+
+@inject WindowUI.Web.Services.ITodoItemService TodoItemService
+
+<WindowBase Title="Todo List" OnClose="OnClose">
+    <div class="todos">
+        @foreach (var todo in _todos)
+        {
+            <TodoComp Title="@todo.Title" IsDone="@todo.IsCompleted" />
+        }
+
+        <div class="add-todo">
+            <input type="text" placeholder="New todo..." @bind-value="_newTodoTitle" />
+            <button @onclick="() => InvokeAsync(SubmitNewTodo)">Add</button>
+        </div>
+    </div>
+</WindowBase>
+
+@code {
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private void OnCloseClicked() => OnClose.InvokeAsync();
+
+    private List<TodoItem> _todos = [];
+    
+    private string _newTodoTitle = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _todos = await TodoItemService.GetAllTodoItemsAsync();
+    }
+
+    private async Task SubmitNewTodo()
+    {
+        await TodoItemService.SaveTodoItemAsync(new TodoItem
+        {
+            Title = _newTodoTitle,
+            IsCompleted = false,
+        });
+
+        _todos = await TodoItemService.GetAllTodoItemsAsync();
+    }
+}
