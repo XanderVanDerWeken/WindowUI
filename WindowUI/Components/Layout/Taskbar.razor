@@ -1,7 +1,44 @@
-﻿<div class="taskbar">
+﻿@implements IDisposable
+
+@using System.Threading
+
+<div class="taskbar">
+    <button class="start-button">Start</button>
+
+    <div class=tasks>
+        @if (Tasks is not null && Tasks.Any())
+        {
+            @foreach (var task in Tasks)
+            {
+                <div class="task">@task</div>
+            }
+        }
+    </div>
+    
     <div class="clock">@DateTime.Now.ToString("HH:mm")</div>
 </div>
 
 @code {
+    [Parameter]
+    public List<string> Tasks { get; set; } = [];
 
+    private DateTime _currentTime = DateTime.Now;
+    private Timer? _timer;
+
+    protected override void OnInitialized()
+    {
+        _timer = new Timer(_ =>
+        {
+            InvokeAsync(() =>
+            {
+                _currentTime = DateTime.Now;
+                StateHasChanged();
+            });
+        }, null, 0, 1000);
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
 }

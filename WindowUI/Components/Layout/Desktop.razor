@@ -14,10 +14,12 @@
     }
 </div>
 
-<Taskbar/>
+<Taskbar Tasks=tasks />
 
 @code {
     private bool showTodo = false;
+
+    private List<string> tasks = ["File Explorer", "Web Browser"];
 
     private void ShowTodo()
     {
