@@ -19,6 +19,7 @@
     text-align: center;
     cursor: pointer;
     color: white;
+    z-index: 10;
 }
 
 .icon img {
